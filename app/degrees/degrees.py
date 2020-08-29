@@ -2,7 +2,7 @@ import csv
 import sys
 
 from util import Node, StackFrontier, QueueFrontier
-
+ 
 # Maps names to a set of corresponding person_ids
 names = {}
 
@@ -71,6 +71,8 @@ def main():
 
     path = shortest_path(source, target)
 
+    print('ahi va el path')
+    print (path)
     if path is None:
         print("Not connected.")
     else:
@@ -92,35 +94,39 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    frontier = QueueFrontier()
-    exploredSet = set()
-    steps = 0
-    start = Node(state=source, parent=None, action=None)
+    frontier    = QueueFrontier()
+    exploredSet = []
+    steps       = 0 
+    start       = Node(state=source, parent=None, action=None)
+    found       = False
+    loop        = True
+    path        = [] 
+
     frontier.add(start)
-    while True:
+
+    while not found and loop:
         if frontier.empty():
-            raise Exception("no solution")
-        node = frontier.remove()
+            loop = False
+
+        node   = frontier.remove()
         steps += 1
-        if (node.state == target):
-            path = []
-            path.append(set(node.state, node.action))
-            while node.parent.state != source:
-                node = exploredSet.remove(node.parent)
-                path.append(set(node.state, node.action))
+        if (node.state == target): 
+            found = True 
+            while node.parent is not None:
+                path.append((node.action, node.state))
+                node = node.parent   
+        else:
+            exploredSet.append(node)
+            neighbors = neighbors_for_person(node.state)
+            for film, actor in neighbors:
+                if not frontier.contains_state(actor) and actor not in exploredSet:
+                    child = Node(actor, parent=node, action=film)
+                    frontier.add(child)
 
-            print(path)
-            return 
-
-        exploredSet.add(node)
-        neighbors = neighbors_for_person(node.state)
-        for film, actor in neighbors:
-            if not frontier.contains_state(actor) and actor not in exploredSet:
-                child = Node(actor, parent=node, action=film)
-                frontier.add(child)
-
-    # TODO
-    raise NotImplementedError
+    if found:
+        path.reverse()
+        return path
+    return None
 
 def person_id_for_name(name):
     """
