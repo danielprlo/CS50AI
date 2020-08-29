@@ -14,5 +14,7 @@ RUN pip install -r requirements.txt
 COPY app/ .
 
 # command to run on container start
+RUN pip3 install submit50
+RUN pip3 install --upgrade submit50
 CMD ["python3"]
 CMD tail -f /dev/null
