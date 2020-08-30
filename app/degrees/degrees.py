@@ -71,8 +71,6 @@ def main():
 
     path = shortest_path(source, target)
 
-    print('ahi va el path')
-    print (path)
     if path is None:
         print("Not connected.")
     else:
@@ -110,6 +108,7 @@ def shortest_path(source, target):
 
         node   = frontier.remove()
         steps += 1
+    
         if (node.state == target): 
             found = True 
             while node.parent is not None:
