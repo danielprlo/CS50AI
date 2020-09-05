@@ -161,6 +161,8 @@ def maxVal(board):
     for action in actions(board):
         newBoard = result(board, action)
         v = max(v, minVal(newBoard))
+        #Skip further checks if we already found an optimal case
+        if (v == 1): return v
     return v
 #Returns -1, 0, 1
 def minVal(board):
@@ -170,5 +172,6 @@ def minVal(board):
     for action in actions(board):
         newBoard = result(board, action)
         v = min(v, maxVal(newBoard))
+        #Skip further checks if we already found an optimal case
+        if (v == -1): return v
     return v
-         
