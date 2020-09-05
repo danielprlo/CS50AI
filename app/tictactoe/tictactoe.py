@@ -91,7 +91,7 @@ def terminal(board):
                 return False
     
     return True
-    
+#Returns -1, 0, 1 
 def getValueForAction(action):
     if (action is None):
         return 0
@@ -99,8 +99,7 @@ def getValueForAction(action):
         return 1
     if (action is 'O'):
         return -1      
-
-
+#Returns -1, 0, 1 
 def utility(board):
     d = [0,0]
     boardLn = len(board)
@@ -127,7 +126,7 @@ def utility(board):
             return -1
 
     return 0
-
+#Returns the best move or None
 def minimax(board):
     if (terminal(board)):
         return None
@@ -154,7 +153,7 @@ def minimax(board):
                 actionToDo = action
     
     return actionToDo
-
+#Returns -1, 0, 1
 def maxVal(board):
     if (terminal(board)):
         return utility(board)
@@ -163,7 +162,7 @@ def maxVal(board):
         newBoard = result(board, action)
         v = max(v, minVal(newBoard))
     return v
-
+#Returns -1, 0, 1
 def minVal(board):
     if (terminal(board)):
         return utility(board)
