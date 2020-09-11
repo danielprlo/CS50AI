@@ -5,7 +5,6 @@ Tic Tac Toe Player
 import math
 import copy
 
-
 X = "X"
 O = "O"
 EMPTY = None
@@ -18,8 +17,12 @@ def initial_state():
     return [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
-#Returns X or O 
+
+
 def player(board):
+    """
+    Returns player who has the next turn on a board.
+    """
     #X goes first in the game
     boardLn = len(board)
     movesDone = 0
@@ -33,8 +36,11 @@ def player(board):
         return 'X'
     
     return 'O'
-#Returns set of possible actions
+
 def actions(board):
+    """
+    Returns set of all possible actions (i, j) available on the board.
+    """
     boardLn = len(board)
     moves = []
     for x in range(boardLn):
@@ -43,15 +49,21 @@ def actions(board):
                 moves.append((x, y))
 
     return moves
-#Returns new board state
+
 def result(board, action):
+    """
+    Returns the board that results from making move (i, j) on the board.
+    """
     playerMove = player(board)
     newBoard = copy.deepcopy(board)
     newBoard[action[0]][action[1]] = playerMove
     
     return newBoard
-#Returns X, O, None
+
 def winner(board):
+    """
+    Returns the winner of the game, if there is one.
+    """
     #Diagonals Left, Right
     d = [0,0]
     boardLn = len(board)
@@ -79,8 +91,11 @@ def winner(board):
         
 
     return None
-#Returns True or False
+
 def terminal(board):
+    """
+    Returns True if game is over, False otherwise.
+    """
     if (winner(board) is not None):
         return True
     
@@ -91,16 +106,19 @@ def terminal(board):
                 return False
     
     return True
-#Returns -1, 0, 1 
+
 def getValueForAction(action):
     if (action is None):
         return 0
     if (action is 'X'):
         return 1
     if (action is 'O'):
-        return -1      
-#Returns -1, 0, 1 
+        return -1  
+
 def utility(board):
+    """
+    Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
+    """
     d = [0,0]
     boardLn = len(board)
 
@@ -126,8 +144,11 @@ def utility(board):
             return -1
 
     return 0
-#Returns the best move or None
+
 def minimax(board):
+    """
+    Returns the optimal action for the current player on the board.
+    """
     if (terminal(board)):
         return None
 
@@ -153,7 +174,7 @@ def minimax(board):
                 actionToDo = action
     
     return actionToDo
-#Returns -1, 0, 1
+
 def maxVal(board):
     if (terminal(board)):
         return utility(board)
@@ -164,7 +185,7 @@ def maxVal(board):
         #Skip further checks if we already found an optimal case
         if (v == 1): return v
     return v
-#Returns -1, 0, 1
+
 def minVal(board):
     if (terminal(board)):
         return utility(board)
